@@ -1,5 +1,5 @@
 ===================
-Awesome WM Copycats
+Awesome WM Themes
 ===================
 
 --------------------------------
@@ -10,8 +10,6 @@ Power themes for Awesome WM 3.5+
 :Version: 1.0-git
 :License: BY-NC-SA_
 :Source: https://github.com/rsrsl/awesome-themes
-
-:Author: 
 
 Big Ups
 =======
