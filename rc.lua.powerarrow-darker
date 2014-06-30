@@ -49,7 +49,9 @@ function run_once(cmd)
 end
 
 run_once("urxvtd")
-run_once("unclutter")
+-- run_once("unclutter -idle 1")
+run_once("compton")
+run_once("xautolock -time 30 -locker 'dm-tool lock' -notify 10")
 -- }}}
 
 -- {{{ Variable definitions
@@ -62,12 +64,13 @@ beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/powerarrow-darker/t
 -- common
 modkey     = "Mod4"
 altkey     = "Mod1"
-terminal   = "urxvtc" or "xterm"
+--terminal   = "urxvtc" or "xterm"
+terminal   = "xterm"
 editor     = os.getenv("EDITOR") or "nano" or "vi"
 editor_cmd = terminal .. " -e " .. editor
 
 -- user defined
-browser    = "dwb"
+browser    = "luakit"
 browser2   = "iron"
 gui_editor = "gvim"
 graphics   = "gimp"
@@ -76,9 +79,10 @@ iptraf     = terminal .. " -g 180x54-20+34 -e sudo iptraf-ng -i all "
 musicplr   = terminal .. " -g 130x34-320+16 -e ncmpcpp "
 
 local layouts = {
-    awful.layout.suit.floating,
+    --awful.layout.suit.floating,
     awful.layout.suit.tile,
-    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.left,
+    awful.layout.suit.spiral,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
 }
@@ -87,7 +91,7 @@ local layouts = {
 -- {{{ Tags
 tags = {
    names = { "1", "2", "3", "4", "5"},
-   layout = { layouts[1], layouts[2], layouts[3], layouts[1], layouts[4] }
+   layout = { layouts[1], layouts[1], layouts[1], layouts[1], layouts[1] }
 }
 
 for s = 1, screen.count() do
@@ -447,8 +451,10 @@ globalkeys = awful.util.table.join(
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
-    awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
-    awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
+    awful.key({ modkey, }, "s", function () awful.screen.focus_relative( 1) end),
+    -- awful.key({ modkey, "Shift"   }, "s", function () awful.screen.swap() end),
+    -- awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end),
+    -- awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
     awful.key({ modkey,           }, "Tab",
         function ()
@@ -457,6 +463,8 @@ globalkeys = awful.util.table.join(
                 client.focus:raise()
             end
         end),
+    awful.key({ modkey,           }, "[",     function () awful.tag.incmwfact( 0.05)    end),
+    awful.key({ modkey,           }, "]",     function () awful.tag.incmwfact(-0.05)    end),
     awful.key({ altkey, "Shift"   }, "l",      function () awful.tag.incmwfact( 0.05)     end),
     awful.key({ altkey, "Shift"   }, "h",      function () awful.tag.incmwfact(-0.05)     end),
     awful.key({ modkey, "Shift"   }, "l",      function () awful.tag.incnmaster(-1)       end),
@@ -471,14 +479,16 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Control" }, "r",      awesome.restart),
     awful.key({ modkey, "Shift"   }, "q",      awesome.quit),
+    awful.key({ altkey, "Control" }, "l",      function () awful.util.spawn("dm-tool lock") end),
 
     -- Dropdown terminal
-    awful.key({ modkey,	          }, "z",      function () drop(terminal) end),
+    awful.key({ modkey,          }, "z",      function () drop(terminal) end),
 
     -- Widgets popups
     awful.key({ altkey,           }, "c",      function () lain.widgets.calendar:show(7) end),
     awful.key({ altkey,           }, "h",      function () fswidget.show(7) end),
 
+    awful.key({modkey,altkey},"r", function () awful.util.spawn("dmenu_run -i -p 'Run command:' -nb'"..  beautiful.bg_normal .. "' -nf '"..beautiful.fg_normal.."' -sb '" .. beautiful.bg_focus.. "' -sf '"..beautiful.fg_focus .."'") end),
     -- ALSA volume control
     awful.key({ altkey }, "Up",
         function ()
@@ -529,7 +539,7 @@ globalkeys = awful.util.table.join(
     -- User programs
     awful.key({ modkey }, "q", function () awful.util.spawn(browser) end),
     awful.key({ modkey }, "i", function () awful.util.spawn(browser2) end),
-    awful.key({ modkey }, "s", function () awful.util.spawn(gui_editor) end),
+    -- awful.key({ modkey }, "s", function () awful.util.spawn(gui_editor) end),
     awful.key({ modkey }, "g", function () awful.util.spawn(graphics) end),
 
     -- Prompt
@@ -548,7 +558,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-    awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
+    awful.key({ modkey, "Shift"   }, "s",      function (c) awful.client.movetoscreen(c) end),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "n",
         function (c)
@@ -619,8 +629,8 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
 	                   size_hints_honor = false } },
-    { rule = { class = "URxvt" },
-          properties = { opacity = 0.99 } },
+    { rule_any = { class = {"xterm","XTerm"} },
+          properties = { opacity = 0.8 } },
 
     { rule = { class = "MPlayer" },
           properties = { floating = true } },
@@ -631,15 +641,26 @@ awful.rules.rules = {
     { rule = { class = "Iron" },
           properties = { tag = tags[1][1] } },
 
+    { rule = { class = "gimp" },
+          properties = { floating = true } },
+
+    { rule = { name = "Figure", class = "mathworks" },
+          properties = { floating = true } },
+
     { rule = { instance = "plugin-container" },
           properties = { tag = tags[1][1] } },
 
-	  { rule = { class = "Gimp" },
-     	    properties = { tag = tags[1][4] } },
 
-    { rule = { class = "Gimp", role = "gimp-image-window" },
-          properties = { maximized_horizontal = true,
-                         maximized_vertical = true } },
+    { rule = { class = "Skype" },
+          properties = { floating = true } },
+
+
+--	  { rule = { class = "Gimp" },
+--     	    properties = { tag = tags[1][4] } },
+--
+--    { rule = { class = "Gimp", role = "gimp-image-window" },
+--          properties = { maximized_horizontal = true,
+--                         maximized_vertical = true } },
 }
 -- }}}
 
