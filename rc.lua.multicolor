@@ -490,6 +490,9 @@ globalkeys = awful.util.table.join(
     -- Lock Screen
     awful.key({ altkey, "Control" }, "l",      function () awful.util.spawn("dm-tool lock") end),
 
+    -- Lock Screen
+    awful.key({ altkey, "Control" }, "l",      function () awful.util.spawn("dm-tool lock") end),
+
     -- Dropdown terminal
     awful.key({ modkey,	          }, "z",      function () drop(terminal) end),
 
