@@ -1,11 +1,11 @@
 --[[
-                                      
-     Multicolor Awesome WM config 2.0 
+
+     Multicolor Awesome WM config 2.0
      github.com/rsrsl
 
      Big ups to Luke Bonham
      github.com/copycat-killer
-                                      
+
 --]]
 
 -- {{{ Required libraries
@@ -81,9 +81,9 @@ mail       = terminal .. " -e mutt "
 local layouts = {
     -- awful.layout.suit.floating,
     awful.layout.suit.tile,
+    awful.layout.suit.tile.top,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
     -- awful.layout.suit.fair,
     -- awful.layout.suit.fair.horizontal,
     -- awful.layout.suit.spiral,
@@ -94,8 +94,8 @@ local layouts = {
 
 -- {{{ Tags
 tags = {
-   names = { "term", "web", "docs", "media", "files", "other" },
-   layout = { layouts[1], layouts[1], layouts[1], layouts[1], layouts[1], layouts[1] }
+   names = { "1:term", "2:web", "3:docs" , "4:chat", "5:files",  "6:media", "7:other"},
+   layout = { layouts[1], layouts[1], layouts[1], layouts[1], layouts[1], layouts[1], layouts[1] }
 }
 for s = 1, screen.count() do
 -- Each screen has its own tag table.
@@ -203,7 +203,7 @@ volumewidget = lain.widgets.alsa({
     end
 })
 
--- Net 
+-- Net
 netdownicon = wibox.widget.imagebox(beautiful.widget_netdown)
 --netdownicon.align = "middle"
 netdowninfo = wibox.widget.textbox()
@@ -306,11 +306,11 @@ mytasklist.buttons = awful.util.table.join(
                                           end))
 
 for s = 1, screen.count() do
-    
+
     -- Create a promptbox for each screen
     mypromptbox[s] = awful.widget.prompt()
 
-    
+
     -- We need one layoutbox per screen.
     mylayoutbox[s] = awful.widget.layoutbox(s)
     mylayoutbox[s]:buttons(awful.util.table.join(
@@ -326,9 +326,9 @@ for s = 1, screen.count() do
     mytasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, mytasklist.buttons)
 
     -- Create the upper wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s, height = 16 }) 
+    mywibox[s] = awful.wibox({ position = "top", screen = s, height = 16 })
     --border_width = 0, height =  20 })
-        
+
     -- Widgets that are aligned to the upper left
     local left_layout = wibox.layout.fixed.horizontal()
     left_layout:add(mytaglist[s])
@@ -367,20 +367,20 @@ for s = 1, screen.count() do
     layout:set_left(left_layout)
     -- layout:set_middle(mytasklist[s])
     layout:set_right(right_layout)
-    
+
     mywibox[s]:set_widget(layout)
 
     -- Create the bottom wibox
     mybottomwibox[s] = awful.wibox({ position = "bottom", screen = s, border_width = 0, height = 16 })
     mybottomwibox[s].visible = false
-            
+
     -- Widgets that are aligned to the bottom left
     bottom_left_layout = wibox.layout.fixed.horizontal()
-                        
+
     -- Widgets that are aligned to the bottom right
     bottom_right_layout = wibox.layout.fixed.horizontal()
     bottom_right_layout:add(mylayoutbox[s])
-                                            
+
     -- Now bring it all together (with the tasklist in the middle)
     bottom_layout = wibox.layout.align.horizontal()
     bottom_layout:set_left(bottom_left_layout)
@@ -643,7 +643,8 @@ awful.rules.rules = {
 	                   size_hints_honor = false } },
     { rule = { class = "XTerm" },
           properties = { opacity = 0.85 } },
-
+    {rule = { class = "Skype"},
+	  properties = { opacity = 0.85 } },
     { rule = { class = "MPlayer" },
           properties = { floating = true } },
 
@@ -746,7 +747,7 @@ for s = 1, screen.count() do screen[s]:connect_signal("arrange", function ()
                     c.border_width = 0
                 elseif awful.client.floating.get(c) or layout == "floating" then
                     c.border_width = beautiful.border_width
-                elseif #clients == 1 then 
+                elseif #clients == 1 then
                     clients[1].border_width = 0
                     if layout ~= "max" then
                         awful.client.moveresize(0, 0, 2, 0, clients[1])
