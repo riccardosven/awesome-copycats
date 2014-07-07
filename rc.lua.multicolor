@@ -1,10 +1,10 @@
 --[[
 
-     Multicolor Awesome WM config 2.0
-     github.com/rsrsl
+Multicolor Awesome WM config 2.0
+github.com/rsrsl
 
-     Big ups to Luke Bonham
-     github.com/copycat-killer
+Big ups to Luke Bonham
+github.com/copycat-killer
 
 --]]
 
@@ -23,8 +23,8 @@ local lain      = require("lain")
 -- {{{ Error handling
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
-                     title = "Oops, there were errors during startup!",
-                     text = awesome.startup_errors })
+    title = "Oops, there were errors during startup!",
+    text = awesome.startup_errors })
 end
 
 do
@@ -34,8 +34,8 @@ do
         in_error = true
 
         naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = err })
+        title = "Oops, an error happened!",
+        text = err })
         in_error = false
     end)
 end
@@ -43,18 +43,19 @@ end
 
 -- {{{ Autostart applications
 function run_once(cmd)
-  findme = cmd
-  firstspace = cmd:find(" ")
-  if firstspace then
-     findme = cmd:sub(0, firstspace-1)
-  end
-  awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
+    findme = cmd
+    firstspace = cmd:find(" ")
+    if firstspace then
+        findme = cmd:sub(0, firstspace-1)
+    end
+    awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
 end
 
 -- run_once("urxvtd")
 run_once("unclutter -idle 1")
 run_once("compton")
 run_once("xautolock -time 10 -locker 'dm-tool lock'")
+run_once("syndaemon -i 0.5 -m 100 -d")
 -- }}}
 
 -- {{{ Variable definitions
@@ -67,7 +68,7 @@ beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/multicolor/theme.lu
 -- common
 modkey     = "Mod4"
 altkey     = "Mod1"
-terminal   = "xterm"
+terminal   = "urxvt"
 editor     = os.getenv("EDITOR") or "nano" or "vi"
 editor_cmd = terminal .. " -e " .. editor
 
