@@ -1,4 +1,5 @@
--- vim:fdm=marker ts=4 sts=4 et
+-- vim:fdm=marker ts=4 sts=4 et ft=lua
+
 --[[
 
 Multicolor Awesome WM config 2.0
