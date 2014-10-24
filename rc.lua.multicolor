@@ -1,3 +1,4 @@
+-- vim:fdm=marker ts=4 sts=4 et
 --[[
 
 Multicolor Awesome WM config 2.0
@@ -19,7 +20,6 @@ local naughty   = require("naughty")
 local drop      = require("scratchdrop")
 local lain      = require("lain")
 -- }}}
-
 -- {{{ Error handling
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
@@ -40,7 +40,6 @@ do
     end)
 end
 -- }}}
-
 -- {{{ Autostart applications
 function run_once(cmd)
     findme = cmd
@@ -57,7 +56,6 @@ run_once("compton")
 run_once("xautolock -time 10 -locker 'dm-tool lock'")
 run_once("syndaemon -i 0.5 -m 100 -d")
 -- }}}
-
 -- {{{ Variable definitions
 -- localization
 os.setlocale(os.getenv("LANG"))
@@ -92,7 +90,6 @@ local layouts = {
     -- awful.layout.suit.max,
 }
 -- }}}
-
 -- {{{ Tags
 tags = {
    names = { "1:term", "2:web", "3:docs" , "4:math", "5:chat", "6:files",  "7:media", "8:other"},
@@ -103,7 +100,6 @@ for s = 1, screen.count() do
    tags[s] = awful.tag(tags.names, s, tags.layout)
 end
 -- }}}
-
 -- {{{ Wallpaper
 if beautiful.wallpaper then
     for s = 1, screen.count() do
@@ -111,11 +107,9 @@ if beautiful.wallpaper then
     end
 end
 -- }}}
-
 -- {{{ Freedesktop Menu
 require("freedesktop/freedesktop")
 -- }}}
-
 -- {{{ Wibox
 markup      = lain.util.markup
 
@@ -254,7 +248,6 @@ mpdwidget = lain.widgets.mpd({
 spacer = wibox.widget.textbox(" ")
 
 -- }}}
-
 -- {{{ Layout
 
 -- Create a wibox for each screen and add it
@@ -390,7 +383,6 @@ for s = 1, screen.count() do
     mybottomwibox[s]:set_widget(bottom_layout)
 end
 -- }}}
-
 -- {{{ Mouse Bindings
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
@@ -398,7 +390,6 @@ root.buttons(awful.util.table.join(
     awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
-
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
     -- Take a screenshot
@@ -491,9 +482,6 @@ globalkeys = awful.util.table.join(
     -- Lock Screen
     awful.key({ altkey, "Control" }, "l",      function () awful.util.spawn("dm-tool lock") end),
 
-    -- Lock Screen
-    awful.key({ altkey, "Control" }, "l",      function () awful.util.spawn("dm-tool lock") end),
-
     -- Dropdown terminal
     awful.key({ modkey,           }, "z",      function () drop(terminal) end),
 
@@ -556,14 +544,20 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "g", function () awful.util.spawn(graphics) end),
 
     -- Prompt
-    awful.key({ modkey }, "r", function () mypromptbox[mouse.screen]:run() end),
+    --awful.key({ modkey }, "r", function () mypromptbox[mouse.screen]:run() end),
     awful.key({ modkey }, "x",
               function ()
                   awful.prompt.run({ prompt = "Run Lua code: " },
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
-              end)
+              end),
+    awful.key({ modkey }, "r",
+        function () awful.util.spawn("dmenu_run -i -p 'Run command:' -nb '" .. 
+            beautiful.bg_normal .. "' -nf '" .. beautiful.fg_normal .. 
+            "' -sb '" .. beautiful.bg_focus .. 
+            "' -sf '" .. beautiful.fg_focus .. "'") 
+        end)
 )
 
 clientkeys = awful.util.table.join(
@@ -631,7 +625,6 @@ clientbuttons = awful.util.table.join(
 -- Set keys
 root.keys(globalkeys)
 -- }}}
-
 -- {{{ Rules
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -669,7 +662,6 @@ awful.rules.rules = {
                          maximized_vertical = true } },
 }
 -- }}}
-
 -- {{{ Signals
 -- signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
@@ -738,7 +730,6 @@ client.connect_signal("focus",
     end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-
 -- {{{ Arrange signal handler
 for s = 1, screen.count() do screen[s]:connect_signal("arrange", function ()
         local clients = awful.client.visible(s)
