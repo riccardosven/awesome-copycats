@@ -642,10 +642,13 @@ awful.rules.rules = {
                      keys = clientkeys,
                      buttons = clientbuttons,
                        size_hints_honor = false } },
-    { rule = { class = "XTerm" },
+
+    { rule = { class = "Termite" },
           properties = { opacity = 0.85 } },
+
     {rule = { class = "Skype"},
       properties = { opacity = 0.85 } },
+
     { rule = { class = "MPlayer" },
           properties = { floating = true } },
 
