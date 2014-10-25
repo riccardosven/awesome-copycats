@@ -1,4 +1,4 @@
--- vim:fdm=marker ts=4 sts=4 et ft=lua
+-- vim:fdm=marker ts=4 sts=4 et ft=lua tw=0
 
 --[[
 
@@ -448,7 +448,7 @@ globalkeys = awful.util.table.join(
 
     -- Show/Hide Wibox
     awful.key({ modkey }, "b", function ()
-        --mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible
+        mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible
         mybottomwibox[mouse.screen].visible = not mybottomwibox[mouse.screen].visible
     end),
 
@@ -554,10 +554,10 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     awful.key({ modkey }, "r",
-        function () awful.util.spawn("dmenu_run -i -p 'Run command:' -nb '" .. 
-            beautiful.bg_normal .. "' -nf '" .. beautiful.fg_normal .. 
-            "' -sb '" .. beautiful.bg_focus .. 
-            "' -sf '" .. beautiful.fg_focus .. "'") 
+        function () awful.util.spawn("dmenu_run -i -p 'Run command:' -nb '" ..
+            beautiful.bg_normal .. "' -nf '" .. beautiful.fg_normal ..
+            "' -sb '" .. beautiful.bg_focus ..
+            "' -sf '" .. beautiful.fg_focus .. "'")
         end)
 )
 
