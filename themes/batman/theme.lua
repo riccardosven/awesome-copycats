@@ -67,8 +67,10 @@ theme.widget_batt                   = theme.confdir .. "/icons/bat.png"
 theme.widget_clock                  = theme.confdir .. "/icons/clock.png"
 theme.widget_vol                    = theme.confdir .. "/icons/spkr.png"
 
-theme.taglist_squares_sel           = theme.confdir .. "/icons/square_a.png"
-theme.taglist_squares_unsel         = theme.confdir .. "/icons/square_b.png"
+--theme.taglist_squares_sel           = theme.confdir .. "/icons/square_a.png"
+theme.taglist_squares_sel           = theme.confdir .. "/icons/square_sel.png"
+--theme.taglist_squares_unsel         = theme.confdir .. "/icons/square_b.png"
+theme.taglist_squares_unsel         = theme.confdir .. "/icons/square_unsel.png"
 
 theme.tasklist_disable_icon         = true
 theme.tasklist_floating             = ""
