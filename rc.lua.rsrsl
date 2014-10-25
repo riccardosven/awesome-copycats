@@ -143,9 +143,9 @@ mytasklist.buttons = awful.util.table.join(
                                           end),
                      awful.button({ }, 3, function ()
                                               if instance then
-                                                  instance:hide()
+                                                   instance:hide()
                                                   instance = nil
-                                              else
+                                               else
                                                   instance = awful.menu.clients({
                                                       theme = { width = 250 }
                                                   })
@@ -207,6 +207,16 @@ root.buttons(awful.util.table.join(
     awful.button({ }, 5, awful.tag.viewprev)
 ))
 -- }}}
+-- {{{ Menu keys
+awful.menu.menu_keys = {
+    up    = { "k", "Up" },
+    down  = { "j", "Down", "Tab" },
+    exec  = { "l", "Return", "Right" },
+    enter = { "Right" },
+    back  = { "h","Left"},
+    close = { "q", "Escape"}
+}
+-- }}}
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
     -- Vim like motion for focus
@@ -254,17 +264,26 @@ globalkeys = awful.util.table.join(
 
     -- Dmenu prompt
     awful.key({ modkey }, "r",
-        function () awful.util.spawn("dmenu_run -i -p 'Run command:' -nb '" ..
+        function ()
+            awful.util.spawn("dmenu_run -i -p 'Run command:' -nb '" ..
             beautiful.bg_normal .. "' -nf '" .. beautiful.fg_normal ..
             "' -sb '" .. beautiful.bg_focus ..
             "' -sf '" .. beautiful.fg_focus .. "'")
         end),
+ 
     awful.key({ modkey }, "x",
-              function ()
+        function ()
                   awful.prompt.run({ prompt = "Run Lua code: " },
                   mypromptbox[mouse.screen].widget,
                   awful.util.eval, nil,
                   awful.util.getdir("cache") .. "/history_eval")
+              end),
+               --List of all clients on the screen
+              awful.key({altkey, }, "Tab",
+              function ()
+                  instance = awful.menu.clients({
+                                      theme = { width = 250 },
+                                  })
               end)
 )
 
@@ -408,9 +427,20 @@ client.connect_signal("manage", function (c, startup)
         awful.titlebar(c):set_widget(layout)
     end
 end)
-
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+--
+-- Experimental: Client opacity focus!
+client.connect_signal("focus", function(c)
+    c.border_color = beautiful.border_focus
+    if c.class == "Termite" then
+        c.opacity=0.85
+    end
+end)
+client.connect_signal("unfocus", function(c)
+    c.border_color = beautiful.border_normal
+    if c.class == "Termite" then
+        c.opacity=0.75
+    end
+end)
 -- }}}-- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function (c, startup)
