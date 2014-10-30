@@ -52,6 +52,8 @@ run_once("unclutter -idle 1")
 run_once("compton")
 run_once("xautolock -time 10 -locker 'dm-tool lock'")
 run_once("syndaemon -i 0.5 -m 100 -d")
+run_once("eval $(ssh-agent)")
+run_once("ssh-add ~/.ssh/private/*")
 --}}}
 -- {{{ Variable definitions
 -- localization
