@@ -85,10 +85,9 @@ editor_cmd = terminal .. " -e " .. editor
 --}
 local layouts =
 {
-   lain.layout.centerwork,
-   lain.layout.centerfair,
    awful.layout.suit.tile,
    awful.layout.suit.tile.left,
+   lain.layout.centerwork,
 }
 -- }}}
 -- {{{ Wallpaper
