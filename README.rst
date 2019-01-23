@@ -9,7 +9,7 @@ Power themes for Awesome WM 3.5+
 :Author: Riccardo Sven Risuleo <riccardosven [at] gmail [dot] com>
 :Version: 1.0-git
 :License: BY-NC-SA_
-:Source: https://github.com/rsrsl/awesome-themes
+:Source: https://github.com/riccardosven/awesome-themes
 
 Big Ups
 =======
